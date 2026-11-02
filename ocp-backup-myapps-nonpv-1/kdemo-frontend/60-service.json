@@ -1,0 +1,33 @@
+{
+    "apiVersion":  "v1",
+    "kind":  "List",
+    "items":  [
+                  {
+                      "apiVersion":  "v1",
+                      "kind":  "Service",
+                      "metadata":  {
+                                       "labels":  {
+                                                      "app":  "storefront"
+                                                  },
+                                       "name":  "storefront",
+                                       "namespace":  "kdemo-frontend"
+                                   },
+                      "spec":  {
+                                   "internalTrafficPolicy":  "Cluster",
+                                   "ports":  [
+                                                 {
+                                                     "name":  "http",
+                                                     "port":  8080,
+                                                     "protocol":  "TCP",
+                                                     "targetPort":  8080
+                                                 }
+                                             ],
+                                   "selector":  {
+                                                    "app":  "storefront"
+                                                },
+                                   "sessionAffinity":  "None",
+                                   "type":  "ClusterIP"
+                               }
+                  }
+              ]
+}

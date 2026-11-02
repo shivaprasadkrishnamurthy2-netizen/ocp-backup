@@ -1,0 +1,18 @@
+{
+    "apiVersion":  "v1",
+    "kind":  "Namespace",
+    "metadata":  {
+                     "annotations":  {
+                                         "openshift.io/description":  "KubeShift dependency-discovery demo — the web page that calls orders-api.",
+                                         "openshift.io/display-name":  "Demo: storefront (frontend)",
+                                         "security.openshift.io/MinimallySufficientPodSecurityStandard":  "restricted"
+                                     },
+                     "labels":  {
+                                    "pod-security.kubernetes.io/audit":  "restricted",
+                                    "pod-security.kubernetes.io/audit-version":  "latest",
+                                    "pod-security.kubernetes.io/warn":  "restricted",
+                                    "pod-security.kubernetes.io/warn-version":  "latest"
+                                },
+                     "name":  "kdemo-frontend"
+                 }
+}

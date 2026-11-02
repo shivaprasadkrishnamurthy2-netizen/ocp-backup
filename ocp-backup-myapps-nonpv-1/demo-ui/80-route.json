@@ -1,0 +1,28 @@
+{
+    "apiVersion":  "v1",
+    "kind":  "List",
+    "items":  [
+                  {
+                      "apiVersion":  "route.openshift.io/v1",
+                      "kind":  "Route",
+                      "metadata":  {
+                                       "name":  "demo-ui",
+                                       "namespace":  "demo-ui"
+                                   },
+                      "spec":  {
+                                   "port":  {
+                                                "targetPort":  "http"
+                                            },
+                                   "tls":  {
+                                               "termination":  "edge"
+                                           },
+                                   "to":  {
+                                              "kind":  "Service",
+                                              "name":  "demo-ui",
+                                              "weight":  100
+                                          },
+                                   "wildcardPolicy":  "None"
+                               }
+                  }
+              ]
+}

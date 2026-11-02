@@ -1,0 +1,29 @@
+{
+    "apiVersion":  "v1",
+    "kind":  "List",
+    "items":  [
+                  {
+                      "apiVersion":  "route.openshift.io/v1",
+                      "kind":  "Route",
+                      "metadata":  {
+                                       "name":  "webapp",
+                                       "namespace":  "spk-webapp"
+                                   },
+                      "spec":  {
+                                   "port":  {
+                                                "targetPort":  "http"
+                                            },
+                                   "tls":  {
+                                               "insecureEdgeTerminationPolicy":  "Redirect",
+                                               "termination":  "edge"
+                                           },
+                                   "to":  {
+                                              "kind":  "Service",
+                                              "name":  "webapp",
+                                              "weight":  100
+                                          },
+                                   "wildcardPolicy":  "None"
+                               }
+                  }
+              ]
+}

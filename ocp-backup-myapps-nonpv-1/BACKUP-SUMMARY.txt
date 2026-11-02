@@ -1,0 +1,72 @@
+OPENSHIFT APPLICATION BACKUP
+Taken        : 2026-11-02 20.58
+From cluster : https://api.ocp-sno.site-a.vcf.lab:6443
+As user      : kube:admin
+Namespaces   : demo-ui, freshcart, spk-webapp, kdemo-backend, kdemo-frontend
+
+BACKED UP
+  configmap          5
+  deployment         5
+  rolebinding        2
+  route              4
+  service            5
+
+LEFT OUT ON PURPOSE (the new cluster makes these itself, or another object recreates them)
+  demo-ui  serviceaccount/builder  - created with every namespace
+  demo-ui  serviceaccount/default  - created with every namespace
+  demo-ui  serviceaccount/deployer  - created with every namespace
+  demo-ui  configmap/kube-root-ca.crt  - injected into every namespace
+  demo-ui  configmap/openshift-service-ca.crt  - injected into every namespace
+  demo-ui  rolebinding/system:deployers  - created by the platform
+  demo-ui  rolebinding/system:image-builders  - created by the platform
+  demo-ui  rolebinding/system:image-pullers  - created by the platform
+  freshcart  serviceaccount/builder  - created with every namespace
+  freshcart  serviceaccount/default  - created with every namespace
+  freshcart  serviceaccount/deployer  - created with every namespace
+  freshcart  configmap/kube-root-ca.crt  - injected into every namespace
+  freshcart  configmap/openshift-service-ca.crt  - injected into every namespace
+  freshcart  rolebinding/system:deployers  - created by the platform
+  freshcart  rolebinding/system:image-builders  - created by the platform
+  spk-webapp  serviceaccount/builder  - created with every namespace
+  spk-webapp  serviceaccount/default  - created with every namespace
+  spk-webapp  serviceaccount/deployer  - created with every namespace
+  spk-webapp  configmap/kube-root-ca.crt  - injected into every namespace
+  spk-webapp  configmap/openshift-service-ca.crt  - injected into every namespace
+  spk-webapp  rolebinding/system:deployers  - created by the platform
+  spk-webapp  rolebinding/system:image-builders  - created by the platform
+  kdemo-backend  serviceaccount/builder  - created with every namespace
+  kdemo-backend  serviceaccount/default  - created with every namespace
+  kdemo-backend  serviceaccount/deployer  - created with every namespace
+  kdemo-backend  configmap/kube-root-ca.crt  - injected into every namespace
+  kdemo-backend  configmap/openshift-service-ca.crt  - injected into every namespace
+  kdemo-backend  rolebinding/system:deployers  - created by the platform
+  kdemo-backend  rolebinding/system:image-builders  - created by the platform
+  kdemo-frontend  serviceaccount/builder  - created with every namespace
+  kdemo-frontend  serviceaccount/default  - created with every namespace
+  kdemo-frontend  serviceaccount/deployer  - created with every namespace
+  kdemo-frontend  configmap/kube-root-ca.crt  - injected into every namespace
+  kdemo-frontend  configmap/openshift-service-ca.crt  - injected into every namespace
+  kdemo-frontend  rolebinding/system:deployers  - created by the platform
+  kdemo-frontend  rolebinding/system:image-builders  - created by the platform
+
+!! 1. VOLUME DATA IS NOT IN THIS BACKUP
+   No persistent volume claims were found.
+
+!! 2. IMAGES IN THE CLUSTER'S OWN REGISTRY ARE NOT IN THIS BACKUP
+   Nothing pulls from the internal registry - the images come from registries that outlive the cluster.
+
+!! 3. SECRETS
+   Secrets ARE in this backup, as base64 - which is encoding, not protection. Treat this whole folder
+   as a credential: keep it off shared drives and out of Git, or encrypt it.
+
+!! 4. NOT COVERED: cluster configuration
+   Users (htpasswd / OAuth), the cluster's certificates and DNS, installed operators and the storage
+   setup are not here. If an application needs an operator (for example a database operator), install
+   it on the new cluster first.
+
+TO RESTORE onto the new cluster:
+   oc login <new-api-url> -u kubeadmin
+   oc get storageclass                      # compare with info\storageclasses-on-old-cluster.txt
+   .\restore-ocp-apps.ps1 -BackupDir ".\ocp-backup-myapps-nonpv-1" -StorageClass <class on the new cluster> -HoldWorkloads
+   ...copy the volume data back in, then:
+   .\restore-ocp-apps.ps1 -BackupDir ".\ocp-backup-myapps-nonpv-1" -Release

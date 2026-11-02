@@ -1,0 +1,17 @@
+{
+    "apiVersion":  "v1",
+    "kind":  "List",
+    "items":  [
+                  {
+                      "apiVersion":  "v1",
+                      "data":  {
+                                   "orders.json":  "{\"orders\": [\n  {\"id\": 1001, \"item\": \"mechanical keyboard\", \"qty\": 2, \"status\": \"shipped\"},\n  {\"id\": 1002, \"item\": \"27-inch monitor\",     \"qty\": 1, \"status\": \"packing\"},\n  {\"id\": 1003, \"item\": \"usb-c dock\",          \"qty\": 3, \"status\": \"new\"}\n]}\n"
+                               },
+                      "kind":  "ConfigMap",
+                      "metadata":  {
+                                       "name":  "orders-data",
+                                       "namespace":  "kdemo-backend"
+                                   }
+                  }
+              ]
+}
